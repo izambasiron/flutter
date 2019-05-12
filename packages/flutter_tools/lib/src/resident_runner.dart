@@ -359,6 +359,7 @@ class FlutterDevice {
     package = await ApplicationPackageFactory.instance.getPackageForPlatform(
       targetPlatform,
       applicationBinary: hotRunner.applicationBinary,
+      flavor: hotRunner.debuggingOptions.buildInfo.flavor
     );
 
     if (package == null) {
@@ -410,6 +411,7 @@ class FlutterDevice {
     package = await ApplicationPackageFactory.instance.getPackageForPlatform(
       targetPlatform,
       applicationBinary: coldRunner.applicationBinary,
+      flavor: coldRunner.debuggingOptions.buildInfo.flavor
     );
 
     final String modeName = coldRunner.debuggingOptions.buildInfo.friendlyModeName;

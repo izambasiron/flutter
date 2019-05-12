@@ -266,6 +266,18 @@ class XcodeProjectInterpreter {
     }
   }
 
+  Map<String, String> getBuildSettingsForScheme(String projectPath, String scheme) {
+    final String out = runCheckedSync(<String>[
+      _executable,
+      '-project',
+      fs.path.absolute(projectPath),
+      '-scheme',
+      scheme,
+      '-showBuildSettings',
+    ], workingDirectory: projectPath);
+    return parseXcodeBuildSettings(out);
+  }
+
   Future<XcodeProjectInfo> getInfo(String projectPath) async {
     final RunResult result = await runCheckedAsync(<String>[
       _executable, '-list',

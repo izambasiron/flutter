@@ -33,6 +33,7 @@ class ApplicationPackageFactory {
   Future<ApplicationPackage> getPackageForPlatform(
     TargetPlatform platform, {
     File applicationBinary,
+    String flavor
   }) async {
     switch (platform) {
       case TargetPlatform.android_arm:
@@ -47,7 +48,7 @@ class ApplicationPackageFactory {
             : AndroidApk.fromApk(applicationBinary);
       case TargetPlatform.ios:
         return applicationBinary == null
-            ? IOSApp.fromIosProject(FlutterProject.current().ios)
+            ? IOSApp.fromIosProject(FlutterProject.currentForFlavor(flavor).ios)
             : IOSApp.fromPrebuiltApp(applicationBinary);
       case TargetPlatform.tester:
         return FlutterTesterApp.fromCurrentDirectory();
@@ -350,6 +351,8 @@ abstract class IOSApp extends ApplicationPackage {
   String get simulatorBundlePath;
 
   String get deviceBundlePath;
+
+  String get targetName;
 }
 
 class BuildableIOSApp extends IOSApp {
@@ -369,6 +372,9 @@ class BuildableIOSApp extends IOSApp {
   String _buildAppPath(String type) {
     return fs.path.join(getIosBuildDirectory(), type, name);
   }
+
+  @override
+  String get targetName => project.targetName;
 }
 
 class PrebuiltIOSApp extends IOSApp {
@@ -391,6 +397,9 @@ class PrebuiltIOSApp extends IOSApp {
   String get deviceBundlePath => _bundlePath;
 
   String get _bundlePath => bundleDir.path;
+
+  @override
+  String get targetName => bundleName;
 }
 
 class ApplicationPackageStore {

@@ -336,6 +336,11 @@ class FakeXcodeProjectInterpreter implements XcodeProjectInterpreter {
   }
 
   @override
+  Map<String, String> getBuildSettingsForScheme(String projectPath, String scheme) {
+    return <String, String>{};
+  }
+
+  @override
   Future<XcodeProjectInfo> getInfo(String projectPath) async {
     return XcodeProjectInfo(
       <String>['Runner'],
